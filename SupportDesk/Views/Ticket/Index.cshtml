@@ -1,0 +1,17 @@
+﻿@using SupportDesk.Models.ViewModels
+@model IEnumerable<TicketViewModel>
+@{
+    ViewData["Title"] = "Tickets";
+}
+
+<h1>Tickets page</h1>
+<p>@Model.Count() tickets found.</p>
+
+@foreach (var ticket in Model)
+{
+    <div>
+        <h2>@ticket.Title</h2>
+        <p>@ticket.Description</p>
+        <p>Created at: @ticket.CreationDate</p>
+    </div>
+}

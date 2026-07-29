@@ -6,6 +6,8 @@
 # Local database files
 *.db
 *.sqlite
+*.db-shm
+*.db-wal
 
 # dotenv files
 .env

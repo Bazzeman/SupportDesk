@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SupportDesk.Data.Models;
+using SupportDesk.Models.Entities;
 
 namespace SupportDesk.Data
 {
