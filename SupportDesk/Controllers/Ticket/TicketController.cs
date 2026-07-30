@@ -3,7 +3,7 @@ using SupportDesk.Models.Dtos;
 using SupportDesk.Models.ViewModels;
 using SupportDesk.Services;
 
-namespace SupportDesk.Controllers
+namespace SupportDesk.Controllers.Ticket
 {
     [Route("tickets")]
     public class TicketController(TicketService ticketService) : Controller
