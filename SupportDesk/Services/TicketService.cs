@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SupportDesk.Data;
-using SupportDesk.Models.Dtos;
-using SupportDesk.Models.Entities;
+using SupportDesk.Data.Dtos;
+using SupportDesk.Data.Entities;
 
 namespace SupportDesk.Services
 {

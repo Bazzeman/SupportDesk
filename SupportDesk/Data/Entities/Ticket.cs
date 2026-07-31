@@ -1,6 +1,6 @@
-﻿namespace SupportDesk.Models.Dtos
+﻿namespace SupportDesk.Data.Entities
 {
-    public class TicketDto
+    public class Ticket
     {
         public int Id { get; set; }
 
@@ -8,6 +8,6 @@
 
         public required string Description { get; set; }
 
-        public DateTime CreationDate { get; set; }
+        public DateTime CreationDate { get; set; } = DateTime.Now;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SupportDesk.Models.Dtos;
-using SupportDesk.Models.ViewModels;
+using SupportDesk.Data.Dtos;
+using SupportDesk.Data.ViewModels;
 using SupportDesk.Services;
 
 namespace SupportDesk.Controllers.Ticket

@@ -1,6 +1,6 @@
-﻿namespace SupportDesk.Models.ViewModels
+﻿namespace SupportDesk.Data.Dtos
 {
-    public class TicketViewModel
+    public class TicketDto
     {
         public int Id { get; set; }
 

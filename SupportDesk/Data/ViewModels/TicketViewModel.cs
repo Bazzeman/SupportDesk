@@ -1,6 +1,6 @@
-﻿namespace SupportDesk.Models.Entities
+﻿namespace SupportDesk.Data.ViewModels
 {
-    public class Ticket
+    public class TicketViewModel
     {
         public int Id { get; set; }
 
@@ -8,6 +8,6 @@
 
         public required string Description { get; set; }
 
-        public DateTime CreationDate { get; set; } = DateTime.Now;
+        public DateTime CreationDate { get; set; }
     }
 }
