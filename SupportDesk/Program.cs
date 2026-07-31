@@ -6,7 +6,7 @@ using SupportDesk.Extensions;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +27,21 @@ internal class Program
             using var scope = app.Services.CreateScope();
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             dbContext.Database.Migrate();
+
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            if (!await roleManager.RoleExistsAsync(ApplicationUserRoles.Client))
+            {
+                await roleManager.CreateAsync(new IdentityRole(ApplicationUserRoles.Client));
+            }
+            if (!await roleManager.RoleExistsAsync(ApplicationUserRoles.Staff))
+            {
+                await roleManager.CreateAsync(new IdentityRole(ApplicationUserRoles.Staff));
+            }
+            if (!await roleManager.RoleExistsAsync(ApplicationUserRoles.Admin))
+            {
+                await roleManager.CreateAsync(new IdentityRole(ApplicationUserRoles.Admin));
+            }
         }
         else { 
             app.UseExceptionHandler("/Error");
