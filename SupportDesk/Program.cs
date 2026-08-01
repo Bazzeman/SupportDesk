@@ -21,11 +21,16 @@ internal class Program
 
         builder.Services.AddApplicationServices();
 
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            options.LoginPath = "/User/Login";
+        });
+
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
         {
-            await app.MigrateDatabaseAsync();
+            await app.ApplyMigrationsAsync();
             await app.SeedAuthorizationRolesAsync();
         }
         else { 

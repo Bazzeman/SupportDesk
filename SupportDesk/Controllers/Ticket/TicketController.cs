@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SupportDesk.Data;
 using SupportDesk.Data.Dtos;
 using SupportDesk.Data.ViewModels;
 using SupportDesk.Services;
@@ -6,6 +8,7 @@ using SupportDesk.Services;
 namespace SupportDesk.Controllers.Ticket
 {
     [Route("tickets")]
+    [Authorize]
     public class TicketController(TicketService ticketService) : Controller
     {
         [HttpGet("")]
@@ -25,6 +28,7 @@ namespace SupportDesk.Controllers.Ticket
         }
 
         [HttpGet("create")]
+        [Authorize(Roles = ApplicationUserRoles.Client)]
         public async Task<IActionResult> Create()
         {
             TicketDto newTicket = new()

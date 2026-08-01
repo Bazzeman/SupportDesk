@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SupportDesk.Services;
 
 namespace SupportDesk.Controllers.User
@@ -13,6 +14,11 @@ namespace SupportDesk.Controllers.User
         [HttpGet("login")]
         public async Task<IActionResult> Login(string email, string password)
         {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var result = await userService.Login(
                 email,
                 password,
@@ -27,6 +33,7 @@ namespace SupportDesk.Controllers.User
         }
 
         [HttpGet("logout")]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await userService.Logout();
@@ -37,6 +44,11 @@ namespace SupportDesk.Controllers.User
         [HttpGet("register")]
         public async Task<IActionResult> RegisterAsync(string email, string fullName, string password)
         {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var result = await userService.Register(email, fullName, password);
 
             if (!result.Succeeded)
