@@ -4,7 +4,7 @@ using SupportDesk.Data.Entities;
 
 namespace SupportDesk.Services
 {
-    public sealed class ApplicationUserService(
+    public sealed class AccountService(
         UserManager<ApplicationUser> userManager, 
         SignInManager<ApplicationUser> signInManager, 
         ApplicationDbContext dbContext)

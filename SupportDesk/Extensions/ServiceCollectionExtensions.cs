@@ -7,7 +7,7 @@ namespace SupportDesk.Extensions
         public static IServiceCollection AddApplicationServices(
             this IServiceCollection services)
         {
-            services.AddScoped<ApplicationUserService>();
+            services.AddScoped<AccountService>();
             services.AddScoped<TicketService>();
 
             return services;

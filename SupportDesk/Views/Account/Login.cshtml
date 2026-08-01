@@ -1,0 +1,30 @@
+﻿@using SupportDesk.Data.ViewModels
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    <h2>Welcome Back</h2>
+    <p>Sign in to access your support dashboard.</p>
+
+    <div>
+        <div>
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email)
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password)
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.RememberMe)
+            @Html.CheckBoxFor(m => m.RememberMe)
+        </div>
+
+        <button type="submit">Login</button>
+    </div>
+}

@@ -23,7 +23,7 @@ internal class Program
 
         builder.Services.ConfigureApplicationCookie(options =>
         {
-            options.LoginPath = "/User/Login";
+            options.LoginPath = "/account/login";
         });
 
         var app = builder.Build();
