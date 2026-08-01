@@ -25,24 +25,8 @@ internal class Program
 
         if (app.Environment.IsDevelopment())
         {
-            using var scope = app.Services.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            dbContext.Database.Migrate();
-
-            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-            if (!await roleManager.RoleExistsAsync(ApplicationUserRoles.Client))
-            {
-                await roleManager.CreateAsync(new IdentityRole(ApplicationUserRoles.Client));
-            }
-            if (!await roleManager.RoleExistsAsync(ApplicationUserRoles.Staff))
-            {
-                await roleManager.CreateAsync(new IdentityRole(ApplicationUserRoles.Staff));
-            }
-            if (!await roleManager.RoleExistsAsync(ApplicationUserRoles.Admin))
-            {
-                await roleManager.CreateAsync(new IdentityRole(ApplicationUserRoles.Admin));
-            }
+            await app.MigrateDatabaseAsync();
+            await app.SeedAuthorizationRolesAsync();
         }
         else { 
             app.UseExceptionHandler("/Error");
