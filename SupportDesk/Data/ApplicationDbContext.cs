@@ -14,16 +14,9 @@ namespace SupportDesk.Data
 
             builder.Entity<ApplicationUser>(e =>
             {
-                e.Property(u => u.FirstName)
+                e.Property(u => u.FullName)
                     .IsRequired()
-                    .HasMaxLength(50);
-
-                e.Property(u => u.Infix)
-                    .HasMaxLength(20);
-
-                e.Property(u => u.LastName)
-                    .IsRequired()
-                    .HasMaxLength(50);
+                    .HasMaxLength(100);
             });
 
             builder.Entity<Ticket>(e =>
