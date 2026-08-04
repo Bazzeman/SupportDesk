@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SupportDesk.Data;
+using SupportDesk.Data.Dtos;
 using SupportDesk.Data.Entities;
 
 namespace SupportDesk.Services
@@ -9,13 +10,13 @@ namespace SupportDesk.Services
         SignInManager<ApplicationUser> signInManager, 
         ApplicationDbContext dbContext)
     {
-        public async Task<SignInResult> Login(string email, string password, bool rememberMe, bool lockoutOnFailure = false) =>
+        public async Task<SignInResult> LoginAsync(string email, string password, bool rememberMe, bool lockoutOnFailure = false) =>
             await signInManager.PasswordSignInAsync(email, password, rememberMe, lockoutOnFailure);
 
-        public async Task Logout() =>
+        public async Task LogoutAsync() =>
             await signInManager.SignOutAsync();
 
-        public async Task<IdentityResult> Register(string email, string fullName, string password)
+        public async Task<IdentityResult> RegisterAsync(string email, string fullName, string password)
         {
             using var transaction = await dbContext.Database.BeginTransactionAsync();
 
@@ -23,7 +24,8 @@ namespace SupportDesk.Services
             {
                 UserName = email,
                 Email = email,
-                FullName = fullName
+                FullName = fullName,
+                CreationDate = DateOnly.FromDateTime(DateTime.UtcNow)
             };
 
             IdentityResult result = await userManager.CreateAsync(user, password);
@@ -43,5 +45,19 @@ namespace SupportDesk.Services
             return result;
         }
 
+        public async Task<AccountOverviewDto?> GetAccountOverview()
+        {
+            ApplicationUser? account = await userManager.GetUserAsync(signInManager.Context.User);
+
+            if (account is null)
+            {
+                return null;
+            }
+
+            var role = (await userManager.GetRolesAsync(account)).FirstOrDefault() ?? string.Empty;
+            var email = account.Email ?? string.Empty;
+
+            return new AccountOverviewDto(account.FullName, email, role, account.CreationDate);
+        }
     }
 }

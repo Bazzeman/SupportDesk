@@ -10,9 +10,16 @@ namespace SupportDesk.Controllers.Account
     {
         [HttpGet("")]
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var vm = new AccountViewModel("Placeholder full name", "Placeholder email", "Placeholder role");
+            var overview = await accountService.GetAccountOverview();
+
+            var vm = new AccountOverviewViewModel(
+                overview.FullName,
+                overview.Email,
+                overview.Role,
+                overview.CreationDate
+            );
 
             return View("account", vm);
         }
@@ -36,7 +43,7 @@ namespace SupportDesk.Controllers.Account
                 return RedirectToAction("Index");
             }
 
-            var result = await accountService.Login(
+            var result = await accountService.LoginAsync(
                 model.Email,
                 model.Password,
                 model.RememberMe);
@@ -72,7 +79,7 @@ namespace SupportDesk.Controllers.Account
                 ? $"{model.FirstName} {model.LastName}"
                 : $"{model.FirstName} {model.Infix} {model.LastName}";
 
-            var result = await accountService.Register(model.Email, fullName, model.Password);
+            var result = await accountService.RegisterAsync(model.Email, fullName, model.Password);
 
             if (!result.Succeeded)
             {
@@ -86,7 +93,7 @@ namespace SupportDesk.Controllers.Account
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await accountService.Logout();
+            await accountService.LogoutAsync();
 
             return RedirectToAction("Login");
         }

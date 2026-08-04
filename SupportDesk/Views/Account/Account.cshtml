@@ -1,5 +1,5 @@
 ﻿@using SupportDesk.Data.ViewModels
-@model AccountViewModel
+@model AccountOverviewViewModel
 @{
     ViewData["Title"] = "Account";
 }
@@ -8,3 +8,4 @@
 <p>Welcome, @Model.FullName!</p>
 <p>Email: @Model.Email</p>
 <p>Role: @Model.Role</p>
+<p>Created at: @Model.CreationDate</p>

@@ -12,8 +12,9 @@
         string Email,
         string Password);
 
-    public sealed record AccountViewModel(
+    public sealed record AccountOverviewViewModel(
         string FullName,
         string Email,
-        string Role);
+        string Role,
+        DateOnly CreationDate);
 }
