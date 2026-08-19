@@ -1,17 +1,17 @@
 # MoSCoW table
 
 ## Must have
-- [ ] ASP.NET Project setup
-- [ ] Entity Framework Core
-- [ ] ASP.NET Identity
-- [ ] Authentication
-- [ ] RBAC (role based access control)
-- [ ] Ticket CRUD (create, read, update, delete)
-- [ ] Client dashboard
-- [ ] Staff dashboard
+- [x] ASP.NET Project setup
+- [x] Entity Framework Core
+- [x] ASP.NET Identity
+- [x] Authentication
+- [x] RBAC (role based access control)
+- [x] Ticket CRUD (create, read, update, delete)
+- [x] Client dashboard
+- [x] Staff dashboard
 - [ ] Ticket status
 - [ ] Ticket conversations
-- [ ] Razor Pages UI
+- [x] Razor Pages UI
 
 ## Should have
 - [ ] Ticket priority
