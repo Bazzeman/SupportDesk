@@ -9,6 +9,7 @@ namespace SupportDesk.Extensions
         {
             services.AddScoped<AccountService>();
             services.AddScoped<TicketService>();
+            services.AddScoped<MessageService>();
 
             return services;
         }
