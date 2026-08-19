@@ -1,17 +1,28 @@
 ﻿@using SupportDesk.Data.ViewModels
-@model IEnumerable<TicketViewModel>
+@model IEnumerable<TicketOverviewViewModel>
 @{
     ViewData["Title"] = "Tickets";
 }
 
 <h1>Tickets page</h1>
+
+<div>
+    <a asp-controller="Ticket" asp-action="Create">Create Ticket</a>
+</div>
+
 <p>@Model.Count() tickets found.</p>
 
 @foreach (var ticket in Model)
 {
     <div>
-        <h2>@ticket.Title</h2>
+        <h2><a asp-controller="Ticket" asp-action="Ticket" asp-route-id="@ticket.Id">@ticket.Title</a></h2>
         <p>@ticket.Description</p>
         <p>Created at: @ticket.CreationDate</p>
+        <form asp-controller="Ticket"
+              asp-action="Delete"
+              asp-route-id="@ticket.Id"
+              method="post">
+            <button type="submit">Delete</button>
+        </form>
     </div>
 }

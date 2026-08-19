@@ -1,0 +1,13 @@
+﻿@using SupportDesk.Data.ViewModels
+@model TicketViewModel
+@{
+    ViewData["Title"] = "Ticket";
+}
+
+<h2>Ticket</h2>
+<p>Title: @Model.Title</p>
+<p>Description: @Model.Description</p>
+
+<div>
+    <a asp-action="Index">Back to Tickets</a>
+</div>

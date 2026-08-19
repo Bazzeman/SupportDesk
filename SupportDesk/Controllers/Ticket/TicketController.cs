@@ -7,7 +7,7 @@ using SupportDesk.Services;
 
 namespace SupportDesk.Controllers.Ticket
 {
-    [Route("tickets")]
+    [Route("ticket")]
     [Authorize]
     public class TicketController(TicketService ticketService) : Controller
     {
@@ -16,25 +16,50 @@ namespace SupportDesk.Controllers.Ticket
         {
             IEnumerable<TicketDto> tickets = await ticketService.GetTicketsAsync();
 
-            IEnumerable<TicketViewModel> ticketViewModels = tickets.Select(ticket => new TicketViewModel
-            {
-                Id = ticket.Id,
-                Title = ticket.Title,
-                Description = ticket.Description,
-                CreationDate = ticket.CreationDate
-            });
+            IEnumerable<TicketOverviewViewModel> ticketViewModels = tickets.Select(ticket => new TicketOverviewViewModel
+            (
+                ticket.Id,
+                ticket.Title,
+                ticket.Description,
+                ticket.CreationDate
+            ));
 
             return View(ticketViewModels);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Ticket(int id)
+        {
+            var ticket = await ticketService.GetTicketByIdAsync(id);
+
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            TicketViewModel model = new(
+                ticket?.Title ?? string.Empty,
+                ticket?.Description ?? string.Empty,
+                ticket?.CreationDate ?? DateTime.MinValue);
+
+            return View(model);
         }
 
         [HttpGet("create")]
         [Authorize(Roles = ApplicationUserRoles.Client)]
         public async Task<IActionResult> Create()
         {
+            return View();
+        }
+
+        [HttpPost("create")]
+        [Authorize(Roles = ApplicationUserRoles.Client)]
+        public async Task<IActionResult> Create(CreateTicketViewModel model)
+        {
             TicketDto newTicket = new()
             {
-                Title = "New Ticket",
-                Description = "This is a new ticket."
+                Title = model.Title,
+                Description = model.Description
             };
 
             bool isCreated = await ticketService.CreateTicketAsync(newTicket);
@@ -45,6 +70,19 @@ namespace SupportDesk.Controllers.Ticket
             }
 
             return BadRequest();
+        }
+
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            bool isDeleted = await ticketService.DeleteTicketAsync(id);
+
+            if (!isDeleted)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }
