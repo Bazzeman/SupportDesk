@@ -7,6 +7,7 @@ namespace SupportDesk.Data
     public sealed class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
     {
         public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -22,12 +23,21 @@ namespace SupportDesk.Data
             builder.Entity<Ticket>(e =>
             {
                 e.Property(t => t.Title)
-                    .IsRequired()
                     .HasMaxLength(100);
 
                 e.Property(t => t.Description)
-                    .IsRequired()
                     .HasMaxLength(2000);
+            });
+
+            builder.Entity<Message>(e =>
+            {
+                e.Property(m => m.Content)
+                    .HasMaxLength(50000);
+                
+                e.HasOne(m => m.Author)
+                    .WithMany()
+                    .HasForeignKey(m => m.AuthorId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }
