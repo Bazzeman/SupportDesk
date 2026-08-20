@@ -1,0 +1,29 @@
+﻿@using SupportDesk.Data.ViewModels
+@model TicketFormViewModel
+@{
+    ViewData["Title"] = "Create ticket";
+    bool isEditMode = (Model?.Id ?? 0) != 0;
+}
+
+<h1>@(isEditMode ? "Edit Ticket" : "Create Ticket")</h1>
+<p>@(isEditMode 
+    ? "Edit the details of your support ticket below." 
+    : "Fill out the form below to create a new support ticket.")
+</p>
+
+@using (Html.BeginForm("Form", "Ticket", FormMethod.Post))
+{
+    <div>
+        <div>
+            @Html.LabelFor(m => m.Title)
+            @Html.TextBoxFor(m => m.Title)
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.Description)
+            @Html.TextAreaFor(m => m.Description)
+        </div>
+
+        <button type="submit">@(isEditMode ? "Edit Ticket" : "Create Ticket")</button>
+    </div>
+}
