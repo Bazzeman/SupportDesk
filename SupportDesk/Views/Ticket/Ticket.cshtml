@@ -11,3 +11,37 @@
 <div>
     <a asp-action="Index">Back to Tickets</a>
 </div>
+
+<div>
+    <h3>Messages</h3>
+
+    @if (Model.Messages != null && Model.Messages.Any())
+    {
+        <ul>
+            @foreach (var message in Model.Messages)
+            {
+                <li>@message.Content</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No messages yet.</p>
+    }
+</div>
+
+@using (Html.BeginForm("Message", "Ticket", FormMethod.Post))
+{
+    <h2>Create a new message</h2>
+
+    <div>
+        @Html.HiddenFor(m => m.NewMessage.TicketId)
+
+        <div>
+            @Html.LabelFor(m => m.NewMessage.Content)
+            @Html.TextBoxFor(m => m.NewMessage.Content)
+        </div>
+
+        <button type="submit">Create Message</button>
+    </div>
+}

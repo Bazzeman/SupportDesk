@@ -9,7 +9,7 @@ namespace SupportDesk.Controllers.Ticket
 {
     [Route("ticket")]
     [Authorize]
-    public class TicketController(TicketService ticketService) : Controller
+    public class TicketController(TicketService ticketService, MessageService messageService) : Controller
     {
         [HttpGet("")]
         public async Task<IActionResult> Index()
@@ -37,10 +37,21 @@ namespace SupportDesk.Controllers.Ticket
                 return NotFound();
             }
 
+            var messages = (await messageService.GetMessagesByTicketIdAsync(id)).Select(m => new MessageViewModel
+            (
+                m.Id,
+                m.Content,
+                m.AuthorFullName,
+                m.Status,
+                m.PostDate
+            ));
+
             TicketViewModel model = new(
                 ticket?.Title ?? string.Empty,
                 ticket?.Description ?? string.Empty,
-                ticket?.CreationDate ?? DateTime.MinValue);
+                ticket?.CreationDate ?? DateTime.MinValue,
+                messages,
+                new CreateMessageViewModel("", id));
 
             return View(model);
         }

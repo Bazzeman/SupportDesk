@@ -7,7 +7,7 @@ namespace SupportDesk.Services
 {
     public class MessageService(ApplicationDbContext context)
     {
-        public async Task<IEnumerable<MessageDto>> GetMessagesAsync(int ticketId) =>
+        public async Task<IEnumerable<MessageDto>> GetMessagesByTicketIdAsync(int ticketId) =>
             await context.Messages
                 .Where(m => m.TicketId == ticketId)
                 .Include(m => m.Author)
