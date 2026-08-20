@@ -1,5 +1,5 @@
 ﻿@using SupportDesk.Data.ViewModels
-@model IEnumerable<TicketOverviewViewModel>
+@model IEnumerable<TicketSummaryViewModel>
 @{
     ViewData["Title"] = "Tickets";
 }
@@ -18,6 +18,9 @@
         <h2><a asp-controller="Ticket" asp-action="Ticket" asp-route-id="@ticket.Id">@ticket.Title</a></h2>
         <p>@ticket.Description</p>
         <p>Created at: @ticket.CreationDate</p>
+        <div>
+            <a asp-controller="Ticket" asp-action="Edit" asp-route-id="@ticket.Id">Edit</a>
+        </div>
         <form asp-controller="Ticket"
               asp-action="Delete"
               asp-route-id="@ticket.Id"

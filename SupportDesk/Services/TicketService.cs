@@ -45,6 +45,23 @@ namespace SupportDesk.Services
             return changes > 0;
         }
 
+        public async Task<bool> UpdateTicketAsync(TicketDto dto)
+        {
+            var ticket = await context.Tickets.FindAsync(dto.Id);
+
+            if (ticket == null)
+            {
+                return false;
+            }
+
+            ticket.Title = dto.Title;
+            ticket.Description = dto.Description;
+
+            int changes = await context.SaveChangesAsync();
+
+            return changes > 0;
+        }
+
         public async Task<bool> DeleteTicketAsync(int id)
         {
             var ticket = await context.Tickets.FindAsync(id);

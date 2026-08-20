@@ -1,8 +1,10 @@
 ﻿namespace SupportDesk.Data.ViewModels
 {
-    public sealed record CreateMessageViewModel(
-        string Content,
-        int TicketId);
+    public sealed class CreateMessageViewModel
+    {
+        public string? Content { get; set; }
+        public int TicketId { get; set; }
+    }
 
     public sealed record UpdateMessageViewModel(
         string Content,
