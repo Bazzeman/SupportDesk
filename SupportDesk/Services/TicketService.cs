@@ -42,6 +42,8 @@ namespace SupportDesk.Services
 
             int changes = await context.SaveChangesAsync();
 
+            dto.Id = entity.Id;
+
             return changes > 0;
         }
 

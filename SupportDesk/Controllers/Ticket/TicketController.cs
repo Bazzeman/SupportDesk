@@ -30,30 +30,7 @@ namespace SupportDesk.Controllers.Ticket
         }
 
         /// <summary>
-        /// Handles the creation of a new ticket. Only accessible to users with the "Client" role.
-        /// </summary>
-        [HttpPost("")]
-        [Authorize(Roles = ApplicationUserRoles.Client)]
-        public async Task<IActionResult> Create(TicketFormViewModel model)
-        {
-            TicketDto newTicket = new()
-            {
-                Title = model.Title,
-                Description = model.Description
-            };
-
-            bool isCreated = await ticketService.CreateTicketAsync(newTicket);
-
-            if (isCreated)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
-            return BadRequest();
-        }
-
-        /// <summary>
-        /// Returns a view with the details of a specific ticket, including its messages.
+        /// Returns a view of the ticket, including its messages.
         /// </summary>
         [HttpGet("{id}")]
         public async Task<IActionResult> Ticket(int id)
@@ -86,37 +63,67 @@ namespace SupportDesk.Controllers.Ticket
         }
 
         /// <summary>
-        /// Handles the update of an existing ticket. Only accessible to users with the "Client" role.
+        /// Returns a view for creating a new ticket or editing an existing one. Only accessible to users with the "Client" role.
         /// </summary>
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Edit(int id, TicketFormViewModel model)
+        [HttpGet("form")]
+        [Authorize(Roles = ApplicationUserRoles.Client)]
+        public async Task<IActionResult> Form(int? id)
         {
-            if (id != model.Id)
+            if (id is null)
             {
-                return BadRequest();
+                return View("Form");
             }
 
-            TicketDto ticket = new()
-            {
-                Id = model.Id,
-                Title = model.Title,
-                Description = model.Description
-            };
+            var ticket = await ticketService.GetTicketByIdAsync(id.Value);
 
-            bool isUpdated = await ticketService.UpdateTicketAsync(ticket);
-
-            if (!isUpdated)
+            if (ticket is null)
             {
                 return NotFound();
             }
 
-            return RedirectToAction(nameof(Index));
+            TicketFormViewModel model = new()
+            {
+                Id = id.Value,
+                Title = ticket.Title,
+                Description = ticket.Description
+            };
+
+            return View("Form", model);
         }
 
         /// <summary>
-        /// Handles the deletion of a ticket by its ID. Only accessible to users with the "Client" role.
+        /// Handles the submission of the ticket form for creating a new ticket or updating an existing one. 
+        /// Only accessible to users with the "Client" role.
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpPost("form")]
+        [Authorize(Roles = ApplicationUserRoles.Client)]
+        public async Task<IActionResult> Form(TicketFormViewModel model)
+        {
+            TicketDto ticket = new()
+            {
+                Id = model.Id ?? 0,
+                Title = model.Title,
+                Description = model.Description
+            };
+
+            bool success = ticket.Id == 0 
+                ? await ticketService.CreateTicketAsync(ticket) 
+                : await ticketService.UpdateTicketAsync(ticket);
+
+            if (!success)
+            {
+                return ticket.Id == 0 
+                    ? BadRequest() 
+                    : NotFound();
+            }
+
+            return RedirectToAction(nameof(Ticket), new { id = ticket.Id });
+        }
+
+        /// <summary>
+        /// Deletes a ticket with the specified ID. Only accessible to users with the "Client" role.
+        /// </summary>
+        [HttpPost("{id}/delete")]
         public async Task<IActionResult> Delete(int id)
         {
             bool isDeleted = await ticketService.DeleteTicketAsync(id);
@@ -127,40 +134,6 @@ namespace SupportDesk.Controllers.Ticket
             }
 
             return RedirectToAction(nameof(Index));
-        }
-
-        /// <summary>
-        /// Returns a view for creating a new ticket. Only accessible to users with the "Client" role.
-        /// </summary>
-        [HttpGet("create")]
-        [Authorize(Roles = ApplicationUserRoles.Client)]
-        public async Task<IActionResult> Create()
-        {
-            return View("Form");
-        }
-
-        /// <summary>
-        /// Returns a view for editing an existing ticket. Only accessible to users with the "Client" role.
-        /// </summary>
-        [HttpGet("{id}/edit")]
-        [Authorize(Roles = ApplicationUserRoles.Client)]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var ticket = await ticketService.GetTicketByIdAsync(id);
-
-            if (ticket == null)
-            {
-                return NotFound();
-            }
-
-            TicketFormViewModel model = new()
-            {
-                Id = id,
-                Title = ticket.Title,
-                Description = ticket.Description
-            };
-
-            return View("Form", model);
         }
     }
 }

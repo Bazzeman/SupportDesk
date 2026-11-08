@@ -13,6 +13,8 @@
 
 @using (Html.BeginForm("Form", "Ticket", FormMethod.Post))
 {
+    @Html.HiddenFor(m => m.Id)
+
     <div>
         <div>
             @Html.LabelFor(m => m.Title)

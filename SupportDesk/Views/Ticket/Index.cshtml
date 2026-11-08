@@ -7,7 +7,7 @@
 <h1>Tickets page</h1>
 
 <div>
-    <a asp-controller="Ticket" asp-action="Create">Create Ticket</a>
+    <a asp-controller="Ticket" asp-action="Form">Create Ticket</a>
 </div>
 
 <p>@Model.Count() tickets found.</p>
@@ -19,7 +19,7 @@
         <p>@ticket.Description</p>
         <p>Created at: @ticket.CreationDate</p>
         <div>
-            <a asp-controller="Ticket" asp-action="Edit" asp-route-id="@ticket.Id">Edit</a>
+            <a asp-controller="Ticket" asp-action="Form" asp-route-id="@ticket.Id">Edit</a>
         </div>
         <form asp-controller="Ticket"
               asp-action="Delete"
